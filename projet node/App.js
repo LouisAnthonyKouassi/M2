@@ -23,7 +23,10 @@ class App extends Component {
             .catch(err => console.error(err))
     }
 
-    //Mapping du tableau restaurants afin d'afficher tous les markers avec leurs informations
+    /*Mapping du tableau restaurants afin de récupérer les coordonnées des markers et de les afficher sur la map
+    On créer un marker pour chaque latitude/longitude récupérées grâce à la variable maps
+    On attribue le marker à la map, et on affiche une description quand on passe le curseur sur un marker
+    Lorsqu'on clique sur un marker, on affiche une alerte avec les informations de celui-ci*/
     renderMarkers(map, maps) {
         this.state.restaurants.map((value, i) => {
             let longitude = value['coord']['coordinates'][0];
@@ -33,10 +36,19 @@ class App extends Component {
                 map,
                 title: value['name']+'\n'+value['address']
             });
+            marker.addListener("click", () => {
+                //alert(marker.title)
+                window.open(value['details'])
+            });
         })
     }
 
-    //Affichage de la map avec calcul de la position des markers au chargement
+    /*Affichage de la map avec les markers
+    Nécessite une clé google permettant de charger la map, obtenue sur Google Maps Platform
+    yesIWantToUseGoogleMapApiInternals permet d'utiliser l'API Google Maps et d'obtenir map et maps
+    map permet de récupérer la carte de google
+    maps permet d'utiliser tous les éléments de Maps Javascript API, dont l'ajout de markers
+    https://developers.google.com/maps/documentation/javascript*/
     render() {
         return(
             <div style={{'width':"auto",'height':1000}}>

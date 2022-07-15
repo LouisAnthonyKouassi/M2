@@ -17,10 +17,10 @@ app.get('/', (req,res) => {
     res.send("App is Working");
 })
 //On récupère les restaurants de la bdd, ici limité à 50 restaurants, on peut choisir quelles colonnes on veut avec project()
+// On récupère le nom, les coordonnées et les détails des restaurants, et on les envoie au format json
 app.get('/restau', async (req,res) => {
     try {
-        //const names = await db.collection('ParisRestaurant').find({}).project({"name": 1, "coord": 1}).limit(50).toArray()
-        const names = await db.collection('ParisRestaurant').find({}).limit(50).toArray()
+        const names = await db.collection('ParisRestaurant').find({}).project({"name": 1, "coord": 1, "details": 1}).limit(50).toArray()
         return res.json({data: names})
     } catch (err) {
         console.log(err)
